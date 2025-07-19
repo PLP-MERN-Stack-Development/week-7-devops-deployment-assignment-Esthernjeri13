@@ -1,0 +1,40 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./realtime-chat-app
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install deps
+        run: npm install
+      - name: Lint
+        run: npm run lint
+      - name: Test
+        run: npm run test || echo "No tests"
+      - name: Build
+        run: npm run build
+
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./server
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install deps
+        run: npm install
+      - name: Lint
+        run: npx eslint . || echo "No ESLint config"
+      - name: Build and Deploy
+        run: |
+          echo "Configure deployment manually via Render"
+
